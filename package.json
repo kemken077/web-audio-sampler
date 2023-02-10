@@ -4,7 +4,7 @@
   "description": "An easy to use web audio sampler (Quick, fast sampling device)",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon ./server.js",
+    "start": "nodemon server.js --watch index.html --watch './public/*' -ext js, json, css, html, ts, tsx",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
