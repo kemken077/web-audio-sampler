@@ -1,29 +1,46 @@
 let _audioContext;
+let _currentBuffer;
+let _currentSource;
 const samples = {};
-const playUIButton = document.getElementById('play');
+const playStopUIButton = document.getElementById('playstop');
 const clickEventTypeByDevice = isMobile() ? 'touchstart' : 'click';
-console.log({clickEventTypeByDevice});
+const STATE = {
+  isPlaying: false,
+};
+const UITexts = {
+  buttons: {
+    play: 'PLAY SOUND',
+    stop: 'STOP SOUND',
+    pause: 'PAUSE SOUND',
+  }
+};
 
 function isMobile() {
   return /Mobi/.test(navigator.userAgent);
 }
 
 function playDevice() {
-  console.log('PLAYING...');
   loadSample('amen', './public/audio/amen.wav');
   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
   _audioContext = audioContext;
   // Later, you can play a sample like this:
-  playSample(samples['amen']);
+  const currentBuffer = samples['amen'];
+  playSample(currentBuffer);
+  _currentBuffer = currentBuffer;
 }
 
 function playSample(buffer) {
   const source = _audioContext.createBufferSource();
+  _currentSource = source;
   source.buffer = buffer;
   source.connect(_audioContext.destination);
   source.start();
 }
 
+function stopDevice() {
+  const source = _currentSource;
+  source.stop();
+}
 
 function loadSample(name, url) {
   fetch(url)
@@ -34,7 +51,31 @@ function loadSample(name, url) {
     });
 }
 
+function isPlaying() {
+  return STATE.isPlaying;
+}
 
-playUIButton.addEventListener(clickEventTypeByDevice, () => {
-  playDevice();
+function setIsPlayingState(newState) {
+  STATE.isPlaying = newState;
+}
+
+function updateInnerText(el, text) {
+  el.innerText = text;
+}
+
+function handlePlayToggle() {
+  if (isPlaying()) {
+    stopDevice();
+    setIsPlayingState(false);
+    updateInnerText(playStopUIButton, UITexts.buttons.play);
+  } else {
+    playDevice();
+    setIsPlayingState(true);
+    updateInnerText(playStopUIButton, UITexts.buttons.stop);
+  }
+}
+
+
+playStopUIButton.addEventListener(clickEventTypeByDevice, () => {
+  handlePlayToggle();
 });
