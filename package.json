@@ -1,0 +1,23 @@
+{
+  "name": "web-audio-sampler",
+  "version": "1.0.0",
+  "description": "An easy to use web audio sampler (Quick, fast sampling device)",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon ./server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kemken077/web-audio-sampler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kemken077/web-audio-sampler/issues"
+  },
+  "homepage": "https://github.com/kemken077/web-audio-sampler#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
