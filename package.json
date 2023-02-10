@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/kemken077/web-audio-sampler.git"
   },
-  "author": "",
+  "author": "@kemken077",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kemken077/web-audio-sampler/issues"
