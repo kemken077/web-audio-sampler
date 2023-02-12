@@ -2,16 +2,21 @@ let _audioContext;
 let _currentBuffer;
 let _currentSource;
 const samples = {};
-const playStopUIButton = document.getElementById('playstop');
+const playButton = document.getElementById('play');
+const pauseButton = document.getElementById('pause');
+const stopButton = document.getElementById('stop');
 const clickEventTypeByDevice = isMobile() ? 'touchstart' : 'click';
-const STATE = {
-  isPlaying: false,
+const AUDIO_CONTEXT_STATE_VALUES = {
+  RUNNING: 'running',
+  SUSPENDED: 'suspeneded',
+  CLOSED: 'closed',
 };
 const UITexts = {
   buttons: {
     play: 'PLAY SOUND',
     stop: 'STOP SOUND',
     pause: 'PAUSE SOUND',
+    resume: 'RESUME SOUND',
   }
 };
 
@@ -51,31 +56,53 @@ function loadSample(name, url) {
     });
 }
 
-function isPlaying() {
-  return STATE.isPlaying;
-}
-
-function setIsPlayingState(newState) {
-  STATE.isPlaying = newState;
+function getAudioContextState() {
+  if (_audioContext) {
+    return _audioContext.state;
+  } else {
+    console.warn('No AudioContext yet...');
+  }
 }
 
 function updateInnerText(el, text) {
   el.innerText = text;
 }
 
-function handlePlayToggle() {
-  if (isPlaying()) {
-    stopDevice();
-    setIsPlayingState(false);
-    updateInnerText(playStopUIButton, UITexts.buttons.play);
-  } else {
-    playDevice();
-    setIsPlayingState(true);
-    updateInnerText(playStopUIButton, UITexts.buttons.stop);
+function handlePlayPauseToggle() {
+  console.log(_audioContext);
+  const audioContextState = getAudioContextState();
+  if (audioContextState === AUDIO_CONTEXT_STATE_VALUES.RUNNING) {
+    _audioContext.suspend().then(() => {
+      console.log('Audio suspended...');
+      updateInnerText(pauseButton, UITexts.buttons.resume);
+    });
+  } else if (audioContextState === AUDIO_CONTEXT_STATE_VALUES.SUSPENDED) {
+    _audioContext.resume().then(() => {
+      console.log('Audio resumed...');
+      updateInnerText(pauseButton, UITexts.buttons.pause);
+    });
   }
 }
 
+// document.addEventListener("DOMContentLoaded", () => {
+  stopButton.addEventListener(clickEventTypeByDevice, () => {
+    stopDevice();
+  });
 
-playStopUIButton.addEventListener(clickEventTypeByDevice, () => {
-  handlePlayToggle();
-});
+  playButton.addEventListener(clickEventTypeByDevice, () => {
+    const isAudioContextSuspended = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.SUSPENDED;
+    const isAudioContextClosed = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.CLOSED;
+    const isAudioContextRunning = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.RUNNING;
+    if (_audioContext && isAudioContextRunning) {
+      console.info('AudioContext is running...');
+      playDevice(); // TODO: fix play on first click
+      return;
+    } else if (!_audioContext || isAudioContextSuspended || isAudioContextClosed) {
+      playDevice();
+    }
+  });
+
+  pauseButton.addEventListener(clickEventTypeByDevice, () => {
+    handlePlayPauseToggle();
+  });
+// });
