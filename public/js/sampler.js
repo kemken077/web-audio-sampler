@@ -84,25 +84,25 @@ function handlePlayPauseToggle() {
   }
 }
 
-// document.addEventListener("DOMContentLoaded", () => {
-  stopButton.addEventListener(clickEventTypeByDevice, () => {
-    stopDevice();
-  });
 
-  playButton.addEventListener(clickEventTypeByDevice, () => {
-    const isAudioContextSuspended = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.SUSPENDED;
-    const isAudioContextClosed = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.CLOSED;
-    const isAudioContextRunning = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.RUNNING;
-    if (_audioContext && isAudioContextRunning) {
-      console.info('AudioContext is running...');
-      playDevice(); // TODO: fix play on first click
-      return;
-    } else if (!_audioContext || isAudioContextSuspended || isAudioContextClosed) {
-      playDevice();
-    }
-  });
+stopButton.addEventListener(clickEventTypeByDevice, () => {
+  stopDevice();
+});
 
-  pauseButton.addEventListener(clickEventTypeByDevice, () => {
-    handlePlayPauseToggle();
-  });
-// });
+playButton.addEventListener(clickEventTypeByDevice, () => {
+  const isAudioContextSuspended = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.SUSPENDED;
+  const isAudioContextClosed = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.CLOSED;
+  const isAudioContextRunning = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.RUNNING;
+  if (_audioContext && isAudioContextRunning) {
+    console.info('AudioContext is running...');
+    playDevice(); // TODO: fix play on first click
+    return;
+  } else if (!_audioContext || isAudioContextSuspended || isAudioContextClosed) {
+    playDevice();
+  }
+});
+
+pauseButton.addEventListener(clickEventTypeByDevice, () => {
+  handlePlayPauseToggle();
+});
+
