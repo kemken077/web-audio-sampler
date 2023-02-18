@@ -24,9 +24,8 @@ function isMobile() {
   return /Mobi/.test(navigator.userAgent);
 }
 
-function playDevice() {
+function playDevice(audioContext) {
   loadSample('amen', './public/audio/amen.wav');
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
   _audioContext = audioContext;
   // Later, you can play a sample like this:
   const currentBuffer = samples['amen'];
@@ -90,15 +89,13 @@ stopButton.addEventListener(clickEventTypeByDevice, () => {
 });
 
 playButton.addEventListener(clickEventTypeByDevice, () => {
-  const isAudioContextSuspended = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.SUSPENDED;
-  const isAudioContextClosed = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.CLOSED;
-  const isAudioContextRunning = getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.RUNNING;
-  if (_audioContext && isAudioContextRunning) {
-    console.info('AudioContext is running...');
-    playDevice(); // TODO: fix play on first click
-    return;
-  } else if (!_audioContext || isAudioContextSuspended || isAudioContextClosed) {
-    playDevice();
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioContext && getAudioContextState() === AUDIO_CONTEXT_STATE_VALUES.SUSPENDED) {
+    console.log('Audio context exists.');
+    audioContext.resume();
+  } else {
+    console.log('Audio content not there, creating...')
+    playDevice(audioContext);
   }
 });
 
