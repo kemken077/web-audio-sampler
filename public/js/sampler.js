@@ -11,9 +11,9 @@ function isMobile() {
 const sampleURL = '../public/audio/amen.wav';
 var wavesurfer = WaveSurfer.create({
   container: '#waveform',
-  waveColor: 'violet',
+  waveColor: 'aquamarine',
   scrollParent: true,
-  progressColor: 'purple',
+  progressColor: 'mediumaquamarine',
 });
 wavesurfer.load(sampleURL);
 

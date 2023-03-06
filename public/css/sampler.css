@@ -6,3 +6,16 @@ body {
 h1 {
   text-align: center;
 }
+
+
+.load-file {
+  width: 100%;
+}
+.load-file input {
+  height: 100px;
+  background: aquamarine;
+}
+.load-file input:hover {
+  cursor: pointer;
+  background: mediumaquamarine;
+}
