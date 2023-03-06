@@ -13,11 +13,17 @@
 </head>
 <body>
   <h1>Web Audio Sampler</h1>
-  <button id="play">PLAY SOUND</button>
-  <button id="pause">PAUSE SOUND</button>
-  <button id="stop">STOP SOUND</button>
+  <div class="load-file">
+    <input type="file" id="file-selector" accept="autio/*, .aiff, .wav, .mp4, .ogg" />
+  </div>
+  <div class="player-controls">
+    <button id="play">PLAY SOUND</button>
+    <button id="pause">PAUSE SOUND</button>
+    <button id="stop">STOP SOUND</button>
+  </div>
   <div id="waveform"></div>
   <!-- SCRIPTS -->
+  <script src="./public/js//file-selector.js"></script>
   <script src="./public/js/sampler.js"></script>
 </body>
 </html>
