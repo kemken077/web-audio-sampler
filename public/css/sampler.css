@@ -10,10 +10,14 @@ h1 {
 
 .load-file {
   width: 100%;
+  margin: 20px auto;
 }
 .load-file input {
   height: 100px;
   background: aquamarine;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
 }
 .load-file input:hover {
   cursor: pointer;
